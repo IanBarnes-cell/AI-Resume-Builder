@@ -1,0 +1,17 @@
+Notes
+
+--------------------------------------------------------------------------------------------------------------------
+
+Initialize React App
+
+npm create vite@latest . -- --template react-ts
+
+
+- the . means install the Vite app in the current frontend folder
+- react-ts gives you React + TypeScript
+
+--------------------------------------------------------------------------------------------------------------------
+
+Open Frontend server
+
+npm run dev
