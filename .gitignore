@@ -1,17 +1,26 @@
-# Python
+# =========================
+# Python / FastAPI backend
+# =========================
 backend/.venv/
 venv/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 
 # Environment variables
 .env
 
-# Node / frontend
+# =========================
+# Node / React frontend
+# =========================
 frontend/node_modules/
 node_modules/
 dist/
 
-# OS / editor
-.DS_Store
+# =========================
+# VS Code / OS files
+# =========================
 .vscode/
+.DS_Store
+Thumbs.db
