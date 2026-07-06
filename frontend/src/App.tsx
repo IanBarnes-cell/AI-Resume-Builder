@@ -1,12 +1,7 @@
-import './App.css'
+import Home from "./pages/Home";
 
 function App() {
-  return (
-    <div>
-      <h1>AI Resume Builder</h1>
-      <p>Frontend is running.</p>
-    </div>
-  );
+  return <Home />;
 }
 
 export default App;
