@@ -1,0 +1,19 @@
+from fastapi import APIRouter, UploadFile, File, HTTPException
+from app.services.resume_parser import extract_text_from_pdf
+from app.services.resume_analyzer import analyze_resume_text
+
+router = APIRouter()  # creates router object
+
+@router.post("/upload-resume")  # defines POST endpoint
+async def upload_resume(file: UploadFile = File(...)):  # define function that runs when /upload-resume is pressed
+    if not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(statues_code=400, detail="Only PDF files are allowed.")
+    
+    file_bytes = await file.read()  # reads uploaded file into memory as raw bytes -> stores into file_bytes
+    extracted_text = extract_text_from_pdf(file_bytes)
+    analysis = analyze_resume_text(extracted_text) 
+
+    return {
+        "text": extracted_text,
+        "analysis": analysis,
+    }  # sends response back to frontend as JSON
