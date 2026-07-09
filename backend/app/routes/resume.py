@@ -1,6 +1,7 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException, Form
 from app.services.resume_parser import extract_text_from_pdf
 from app.services.resume_analyzer import analyze_resume_text
+from app.services.job_matcher import match_resume_to_job
 
 router = APIRouter()  # creates router object
 
@@ -17,3 +18,23 @@ async def upload_resume(file: UploadFile = File(...)):  # define function that r
         "text": extracted_text,
         "analysis": analysis,
     }  # sends response back to frontend as JSON
+
+
+@router.post("/match-job")
+async def match_job(
+    file: UploadFile = File(...),
+    job_description: str = Form(...)
+):
+    if not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Only PDF files are allowed.")
+    
+    file_bytes = await file.read()
+    extracted_text = extract_text_from_pdf(file_bytes)
+    analysis = analyze_resume_text(extracted_text)
+    match_results = match_resume_to_job(extracted_text, job_description)
+
+    return {
+        "text": extracted_text,
+        "analysis": analysis,
+        "match_results": match_results,
+    }
