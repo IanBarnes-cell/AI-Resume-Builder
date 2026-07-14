@@ -1,6 +1,14 @@
 import { useState } from "react";
 import api from "../services/api";
 
+type AISuggestions = {
+    overall_feedback: string;
+    improvement_suggestions: string[];
+    missing_skills: string[];
+    bullet_rewrites: string[]
+    tailored_summary: string;
+};
+
 type ResumeAnalysis = {
     word_count: number;
     bullet_count: number;
@@ -24,6 +32,7 @@ function Home() {
   const [analysis, setAnalysis] = useState<ResumeAnalysis | null>(null);
   const [matchResults, setMatchResults] = useState<MatchResults | null>(null);
   const [loading, setLoading] = useState(false);  // tracks whether upload request is currently happening
+  const [aiSuggestions, setAiSuggestions] = useState<AISuggestions | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -95,6 +104,40 @@ function Home() {
     }
   };
 
+  const handleGenerateSuggestions = async () => {
+    if (!selectedFile) {
+        alert("Please select a PDF resume first.");
+        return;
+    }
+
+    if (!jobDescription.trim()) {
+        alert("Please paste a job description first.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    formData.append("job_description", jobDescription);
+
+    try {
+        setLoading(true);
+
+        const response = await api.post("/ai-suggestions", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        setExtractedText(response.data.text);
+        setAiSuggestions(response.data.ai_suggestions);
+    } catch (error) {
+        console.error("AI suggestion request failed:", error);
+        alert("Failed to generate AI suggestions.");
+    } finally {
+        setLoading(false);
+    }
+  };
+
   return (
     <div style={{ padding: "2rem", maxWidth: "1000px", margin: "0 auto" }}>
       <h1>AI Resume Builder</h1>
@@ -118,6 +161,9 @@ function Home() {
         />
         <button onClick={handleMatchJob} disabled={loading} style={{ marginTop: "1rem" }}>
           {loading ? "Matching..." : "Analyze Match"}
+        </button>
+        <button onClick={handleGenerateSuggestions} disabled={loading} style={{ marginTop: "1rem", marginLeft: "1rem" }}>
+            {loading ? "Generating..." : "Generate AI Suggestions"}
         </button>
       </div>
 
@@ -172,6 +218,56 @@ function Home() {
         </div>
       )}
 
+      {aiSuggestions && (
+        <div
+          style={{
+            marginTop: "2rem",
+            padding: "1rem",
+            border: "1px solid #ddd",
+            borderRadius: "8px",
+            background: "#fffdf5",
+          }}
+        >
+          <h2>AI Resume Suggestions</h2>
+
+          <p>
+            <strong>Overall Feedback:</strong> {aiSuggestions.overall_feedback}
+          </p>
+
+          <div style={{ marginTop: "1rem" }}>
+            <strong>Improvement Suggestions:</strong>
+            <ul>
+              {aiSuggestions.improvement_suggestions.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div style={{ marginTop: "1rem" }}>
+            <strong>Missing Skills / Keywords:</strong>
+            <ul>
+              {aiSuggestions.missing_skills.map((skill, index) => (
+                <li key={index}>{skill}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div style={{ marginTop: "1rem" }}>
+            <strong>Bullet Rewrite Suggestions:</strong>
+            <ul>
+              {aiSuggestions.bullet_rewrites.map((bullet, index) => (
+                <li key={index}>{bullet}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div style={{ marginTop: "1rem" }}>
+            <strong>Tailored Summary:</strong>
+            <p>{aiSuggestions.tailored_summary}</p>
+          </div>
+      </div>
+      )}      
+
       {extractedText && (
         <div style={{ marginTop: "2rem" }}>
           <h2>Extracted Resume Text</h2>
@@ -191,4 +287,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Home; 
