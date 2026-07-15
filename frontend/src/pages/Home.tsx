@@ -1,6 +1,12 @@
 import { useState } from "react";
 import api from "../services/api";
 
+import ResumeUpload from "../components/ResumeUpload";
+import JobDescriptionInput from "../components/JobDescriptionInput";
+import ResumeAnalysisCard from "../components/ResumeAnalysisCard";
+import MatchResultsCard from "../components/MatchResultsCard";
+import AISuggestionsCard from "../components/AISuggestionsCard";
+
 type AISuggestions = {
     overall_feedback: string;
     improvement_suggestions: string[];
@@ -143,130 +149,31 @@ function Home() {
       <h1>AI Resume Builder</h1>
       <p>Upload your resume and compare it against a job description.</p>
 
-      <div style={{ marginBottom: "1rem" }}>
-        <input type="file" accept=".pdf" onChange={handleFileChange} />
-        <button onClick={handleUpload} disabled={loading} style={{ marginLeft: "1rem" }}>
-          {loading ? "Processing..." : "Upload Resume"}
-        </button>
-      </div>
+      <ResumeUpload 
+        loading={loading} 
+        handleUpload={handleUpload} 
+        handleFileChange={handleFileChange} 
+      />
 
-      <div style={{ marginTop: "1.5rem" }}>
-        <h2>Job Description</h2>
-        <textarea
-          value={jobDescription}
-          onChange={(e) => setJobDescription(e.target.value)}
-          rows={10}
-          style={{ width: "100%", padding: "1rem", borderRadius: "8px" }}
-          placeholder="Paste the job description here..."
-        />
-        <button onClick={handleMatchJob} disabled={loading} style={{ marginTop: "1rem" }}>
-          {loading ? "Matching..." : "Analyze Match"}
-        </button>
-        <button onClick={handleGenerateSuggestions} disabled={loading} style={{ marginTop: "1rem", marginLeft: "1rem" }}>
-            {loading ? "Generating..." : "Generate AI Suggestions"}
-        </button>
-      </div>
+      <JobDescriptionInput
+        jobDescription={jobDescription}
+        setJobDescription={setJobDescription}
+        loading={loading}
+        handleMatchJob={handleMatchJob}
+        handleGenerateSuggestions={handleGenerateSuggestions}
+      />
 
-      {analysis && (
-        <div
-          style={{
-            marginTop: "2rem",
-            padding: "1rem",
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            background: "#fafafa",
-          }}
-        >
-          <h2>Resume Analysis</h2>
-          <p><strong>Word Count:</strong> {analysis.word_count}</p>
-          <p><strong>Bullet Count:</strong> {analysis.bullet_count}</p>
-          <p><strong>Email:</strong> {analysis.email ?? "Not found"}</p>
-          <p><strong>Phone:</strong> {analysis.phone ?? "Not found"}</p>
-          <p>
-            <strong>Sections Found:</strong>{" "}
-            {analysis.sections_found.length > 0
-              ? analysis.sections_found.join(", ")
-              : "None detected"}
-          </p>
-        </div>
-      )}
+      <ResumeAnalysisCard
+        analysis={analysis}
+      />
 
-      {matchResults && (
-        <div
-          style={{
-            marginTop: "2rem",
-            padding: "1rem",
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            background: "#f5fbff",
-          }}
-        >
-          <h2>Job Match Results</h2>
-          <p><strong>Match Score:</strong> {matchResults.match_score}%</p>
-          <p>
-            <strong>Matched Keywords ({matchResults.matched_keyword_count}):</strong>{" "}
-            {matchResults.matched_keywords.length > 0
-              ? matchResults.matched_keywords.join(", ")
-              : "None"}
-          </p>
-          <p>
-            <strong>Missing Keywords:</strong>{" "}
-            {matchResults.missing_keywords.length > 0
-              ? matchResults.missing_keywords.join(", ")
-              : "None"}
-          </p>
-        </div>
-      )}
+      <MatchResultsCard
+        matchResults={matchResults}
+      />
 
-      {aiSuggestions && (
-        <div
-          style={{
-            marginTop: "2rem",
-            padding: "1rem",
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            background: "#fffdf5",
-          }}
-        >
-          <h2>AI Resume Suggestions</h2>
-
-          <p>
-            <strong>Overall Feedback:</strong> {aiSuggestions.overall_feedback}
-          </p>
-
-          <div style={{ marginTop: "1rem" }}>
-            <strong>Improvement Suggestions:</strong>
-            <ul>
-              {aiSuggestions.improvement_suggestions.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div style={{ marginTop: "1rem" }}>
-            <strong>Missing Skills / Keywords:</strong>
-            <ul>
-              {aiSuggestions.missing_skills.map((skill, index) => (
-                <li key={index}>{skill}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div style={{ marginTop: "1rem" }}>
-            <strong>Bullet Rewrite Suggestions:</strong>
-            <ul>
-              {aiSuggestions.bullet_rewrites.map((bullet, index) => (
-                <li key={index}>{bullet}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div style={{ marginTop: "1rem" }}>
-            <strong>Tailored Summary:</strong>
-            <p>{aiSuggestions.tailored_summary}</p>
-          </div>
-      </div>
-      )}      
+      <AISuggestionsCard
+        aiSuggestions={aiSuggestions}
+      />     
 
       {extractedText && (
         <div style={{ marginTop: "2rem" }}>
