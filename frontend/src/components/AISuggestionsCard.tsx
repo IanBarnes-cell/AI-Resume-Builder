@@ -1,3 +1,5 @@
+import Card from "./Card"
+
 type AISuggestions = {
     overall_feedback: string;
     improvement_suggestions: string[];
@@ -18,15 +20,7 @@ function AISuggestionsCard({
 
     return (
 
-        <div
-          style={{
-            marginTop: "2rem",
-            padding: "1rem",
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            background: "#fffdf5",
-          }}
-        >
+        <Card title="AI Suggestions">
           <h2>AI Resume Suggestions</h2>
 
           <p>
@@ -64,7 +58,7 @@ function AISuggestionsCard({
             <strong>Tailored Summary:</strong>
             <p>{aiSuggestions.tailored_summary}</p>
           </div>
-        </div>
+        </Card>
     );
 }
 

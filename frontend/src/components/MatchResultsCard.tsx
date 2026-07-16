@@ -1,3 +1,5 @@
+import Card from "./Card"
+
 type MatchResults = {
     match_score: number;
     matched_keywords: string[];
@@ -17,16 +19,7 @@ function MatchResultsCard({
     if (!matchResults) return null;
 
     return (
-
-        <div
-          style={{
-            marginTop: "2rem",
-            padding: "1rem",
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            background: "#f5fbff",
-          }}
-        >
+        <Card title="Jobe Match Results">
           <h2>Job Match Results</h2>
           <p><strong>Match Score:</strong> {matchResults.match_score}%</p>
           <p>
@@ -41,7 +34,7 @@ function MatchResultsCard({
               ? matchResults.missing_keywords.join(", ")
               : "None"}
           </p>
-        </div>
+        </Card>
     );
 }
 

@@ -1,3 +1,5 @@
+import Card from "./Card"
+
 type ResumeAnalysis = {
     word_count: number;
     bullet_count: number;
@@ -11,19 +13,12 @@ type ResumeAnalysisCardProps = {
 };
 
 function ResumeAnalysisCard({ analysis }: ResumeAnalysisCardProps) {
+
     if (!analysis) return null;
 
     return (
+        <Card title="Resume Analysis">
 
-        <div
-          style={{
-            marginTop: "2rem",
-            padding: "1rem",
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            background: "#fafafa",
-          }}
-        >
           <h2>Resume Analysis</h2>
           <p><strong>Word Count:</strong> {analysis.word_count}</p>
           <p><strong>Bullet Count:</strong> {analysis.bullet_count}</p>
@@ -35,7 +30,7 @@ function ResumeAnalysisCard({ analysis }: ResumeAnalysisCardProps) {
               ? analysis.sections_found.join(", ")
               : "None detected"}
           </p>
-        </div>
+        </Card>
     );
 }
 

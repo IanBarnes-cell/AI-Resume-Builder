@@ -1,3 +1,5 @@
+import styles from "./ResumeUpload.module.css";
+
 type ResumeUploadProps = {
     loading: boolean;
     handleUpload: () => void;
@@ -12,9 +14,9 @@ function ResumeUpload({
     handleFileChange,
 }: ResumeUploadProps) {
     return (       
-      <div style={{ marginBottom: "1rem" }}>
+      <div className={styles.container}>
         <input type="file" accept=".pdf" onChange={handleFileChange} />
-        <button onClick={handleUpload} disabled={loading} style={{ marginLeft: "1rem" }}>
+        <button onClick={handleUpload} disabled={loading} className={styles.uploadButton}>
           {loading ? "Processing..." : "Upload Resume"}
         </button>
       </div>

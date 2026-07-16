@@ -145,51 +145,58 @@ function Home() {
   };
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "1000px", margin: "0 auto" }}>
-      <h1>AI Resume Builder</h1>
-      <p>Upload your resume and compare it against a job description.</p>
+    <div className="page">
+      <div className="hero">
+        
+        <h1>AI Resume Builder</h1>
 
-      <ResumeUpload 
-        loading={loading} 
-        handleUpload={handleUpload} 
-        handleFileChange={handleFileChange} 
-      />
+        <p>
+          Upload your resume, compare it against job descriptions,
+          and receive personalized AI-powered feedback.
+        </p>
 
-      <JobDescriptionInput
-        jobDescription={jobDescription}
-        setJobDescription={setJobDescription}
-        loading={loading}
-        handleMatchJob={handleMatchJob}
-        handleGenerateSuggestions={handleGenerateSuggestions}
-      />
+        <ResumeUpload 
+          loading={loading} 
+          handleUpload={handleUpload} 
+          handleFileChange={handleFileChange} 
+        />
 
-      <ResumeAnalysisCard
-        analysis={analysis}
-      />
+        <JobDescriptionInput
+          jobDescription={jobDescription}
+          setJobDescription={setJobDescription}
+          loading={loading}
+          handleMatchJob={handleMatchJob}
+          handleGenerateSuggestions={handleGenerateSuggestions}
+        />
 
-      <MatchResultsCard
-        matchResults={matchResults}
-      />
+        <ResumeAnalysisCard
+          analysis={analysis}
+        />
 
-      <AISuggestionsCard
-        aiSuggestions={aiSuggestions}
-      />     
+        <MatchResultsCard
+          matchResults={matchResults}
+        />
 
-      {extractedText && (
-        <div style={{ marginTop: "2rem" }}>
-          <h2>Extracted Resume Text</h2>
-          <pre
-            style={{
-              whiteSpace: "pre-wrap",
-              background: "#f4f4f4",
-              padding: "1rem",
-              borderRadius: "8px",
-            }}
-          >
-            {extractedText}
-          </pre>
-        </div>
-      )}
+        <AISuggestionsCard
+          aiSuggestions={aiSuggestions}
+        />     
+
+        {extractedText && (
+          <div style={{ marginTop: "2rem" }}>
+            <h2>Extracted Resume Text</h2>
+            <pre
+              style={{
+                whiteSpace: "pre-wrap",
+                background: "#f4f4f4",
+                padding: "1rem",
+                borderRadius: "8px",
+              }}
+            >
+              {extractedText}
+            </pre>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
