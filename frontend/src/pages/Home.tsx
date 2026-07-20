@@ -7,6 +7,8 @@ import ResumeAnalysisCard from "../components/ResumeAnalysisCard";
 import MatchResultsCard from "../components/MatchResultsCard";
 import AISuggestionsCard from "../components/AISuggestionsCard";
 
+import LoadingSpinner from "../components/LoadingSpinner";
+
 type AISuggestions = {
     overall_feedback: string;
     improvement_suggestions: string[];
@@ -39,6 +41,7 @@ function Home() {
   const [matchResults, setMatchResults] = useState<MatchResults | null>(null);
   const [loading, setLoading] = useState(false);  // tracks whether upload request is currently happening
   const [aiSuggestions, setAiSuggestions] = useState<AISuggestions | null>(null);
+  const [statusMessage, setStatusMessage] = useState("");
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -67,9 +70,10 @@ function Home() {
       setExtractedText(response.data.text);
       setAnalysis(response.data.analysis);
       setMatchResults(null);
+      setStatusMessage("Resume uploaded successfully.");
     } catch (error) { // failure
       console.error("Upload failed:", error);
-      alert("Failed to upload and analyze resume.");
+      alert("Resume upload failed. Make sure you selected a valid PDF and that the backend is running.");
     } finally { // cleanup
       setLoading(false);
     }
@@ -102,6 +106,7 @@ function Home() {
       setExtractedText(response.data.text);
       setAnalysis(response.data.analysis);
       setMatchResults(response.data.match_results);
+      setStatusMessage("Job match completed.");
     } catch (error) {
       console.error("Job match failed:", error);
       alert("Failed to match resume against job description.");
@@ -136,6 +141,7 @@ function Home() {
 
         setExtractedText(response.data.text);
         setAiSuggestions(response.data.ai_suggestions);
+        setStatusMessage("AI suggestions generated.");
     } catch (error) {
         console.error("AI suggestion request failed:", error);
         alert("Failed to generate AI suggestions.");
@@ -184,6 +190,8 @@ function Home() {
 
           window.URL.revokeObjectURL(url);
 
+          setStatusMessage("Report downloaded.");
+
       } catch (error) {
 
           console.error(error);
@@ -199,6 +207,12 @@ function Home() {
         
         <h1>AI Resume Builder</h1>
 
+        {statusMessage && (
+          <div className="status-message">
+            {statusMessage}
+          </div>
+        )}
+
         <p>
           Upload your resume, compare it against job descriptions,
           and receive personalized AI-powered feedback.
@@ -206,6 +220,7 @@ function Home() {
 
         <ResumeUpload 
           loading={loading} 
+          selectedFile={selectedFile}
           handleUpload={handleUpload} 
           handleFileChange={handleFileChange} 
         />
@@ -234,18 +249,13 @@ function Home() {
         {extractedText && (
           <div style={{ marginTop: "2rem" }}>
             <h2>Extracted Resume Text</h2>
-            <pre
-              style={{
-                whiteSpace: "pre-wrap",
-                background: "#f4f4f4",
-                padding: "1rem",
-                borderRadius: "8px",
-              }}
-            >
+            <pre className="resume-text">
               {extractedText}
             </pre>
           </div>
         )}
+
+        {loading && <LoadingSpinner />}
       </div>
     </div>
   );

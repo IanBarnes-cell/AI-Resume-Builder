@@ -26,7 +26,7 @@ function JobDescriptionInput({
           placeholder="Paste the job description here..."
         />
 
-        <div style={{ marginTop: "1rem" }}>
+        <div className="button-row">
             <button onClick={handleMatchJob} disabled={loading} style={{ marginTop: "1rem" }}>
                 {loading ? "Matching..." : "Analyze Match"}
             </button>
