@@ -4,6 +4,10 @@ from app.services.resume_analyzer import analyze_resume_text
 from app.services.job_matcher import match_resume_to_job
 from app.services.ai_suggester import generate_resume_suggestions
 
+from fastapi.responses import FileResponse
+from app.services.pdf_generator import generate_pdf
+import tempfile  # python creates temp file to constantly overwrite itself
+
 router = APIRouter()  # creates router object
 
 @router.post("/upload-resume")  # defines POST endpoint
@@ -57,3 +61,25 @@ async def ai_suggestions(
         "text": extracted_text,
         "ai_suggestions": suggestions
     }
+
+@router.post("/download-report")
+async def download_report(
+    file: UploadFile = File(...),
+    job_description: str = Form(...)
+):
+    file_bytes = await file.read()
+
+    extracted_text = extract_text_from_pdf(file_bytes)
+
+    suggestions = generate_resume_suggestions(extracted_text, job_description)
+
+    temp_pdf = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
+
+    generate_pdf(suggestions, temp_pdf.name)
+
+    return FileResponse(
+        temp_pdf.name, 
+        filename="Resume_Improvement_Report.pdf", 
+        media_type="application/pdf"
+    )
+

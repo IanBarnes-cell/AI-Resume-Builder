@@ -144,6 +144,55 @@ function Home() {
     }
   };
 
+  const handleDownloadReport = async () => {
+      if (!selectedFile) {
+          alert("Upload a resume first.");
+          return;
+      }
+
+      if (!jobDescription.trim()) {
+          alert("Paste a job description first.");
+          return;
+      }
+
+      const formData = new FormData();
+
+      formData.append("file", selectedFile);
+      formData.append("job_description", jobDescription);
+
+      try {
+
+          const response = await api.post(
+              "/download-report",
+              formData,
+              {
+                  responseType: "blob",
+              }
+          );
+
+          const url = window.URL.createObjectURL(  // creates temporary url pointing to "Blob" of raw binary file data
+              new Blob([response.data])
+          );
+
+          const link = document.createElement("a");
+
+          link.href = url;
+
+          link.download = "Resume_Improvement_Report.pdf";
+
+          link.click();
+
+          window.URL.revokeObjectURL(url);
+
+      } catch (error) {
+
+          console.error(error);
+
+          alert("Download failed.");
+
+      }
+  };
+
   return (
     <div className="page">
       <div className="hero">
@@ -167,6 +216,7 @@ function Home() {
           loading={loading}
           handleMatchJob={handleMatchJob}
           handleGenerateSuggestions={handleGenerateSuggestions}
+          handleDownloadReport={handleDownloadReport}
         />
 
         <ResumeAnalysisCard

@@ -4,6 +4,7 @@ type JobDescriptionInputProps = {
     loading: boolean;
     handleMatchJob: () => void;
     handleGenerateSuggestions: () => void;
+    handleDownloadReport: () => void;
 };
 
 function JobDescriptionInput({
@@ -12,6 +13,7 @@ function JobDescriptionInput({
     loading,
     handleMatchJob,
     handleGenerateSuggestions,
+    handleDownloadReport,
 }: JobDescriptionInputProps) {
     return (         
       <div style={{ marginTop: "1.5rem" }}>
@@ -30,6 +32,10 @@ function JobDescriptionInput({
             </button>
             <button onClick={handleGenerateSuggestions} disabled={loading} style={{ marginTop: "1rem", marginLeft: "1rem" }}>
                 {loading ? "Generating..." : "Generate AI Suggestions"}
+            </button>
+            <button onClick={handleDownloadReport} disabled={loading} style={{marginTop: "1rem", marginLeft: "1rem"}}
+            >
+                Download Report
             </button>
         </div>
       </div>
