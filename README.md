@@ -6,9 +6,9 @@ An AI-powered resume builder and job-tailoring web application that helps users 
 
 ## Live Demo
 
-**Frontend:** https://
+**Frontend:** https://ai-resume-builder-1te8a3ktl-ian-barnes.vercel.app
 
-**Backend API:** https://
+**Backend API:** https://ai-resume-builder-pogp.onrender.com
 
 ---
 
