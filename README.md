@@ -4,22 +4,50 @@ An AI-powered resume builder and job-tailoring web application that helps users 
 
 ---
 
-## Project Overview
+## Live Demo
 
-This project is a full-stack application built with a React frontend and a FastAPI backend. The goal is to allow users to upload a resume PDF, extract and analyze its contents, compare it against a job description, and generate AI-powered suggestions to improve the resume.
+**Frontend:** https://
+
+**Backend API:** https://
 
 ---
 
-## Planned Features
+## Screenshots
 
-- Upload resume as a PDF
-- Extract text from uploaded resumes
-- Display extracted resume content in the app
-- Generate AI resume summaries
-- Match resumes against job descriptions
-- Suggest improved bullet points
-- Recommend missing skills and keywords
-- Export an updated resume
+### Home Page
+
+![Home Page](screenshots/home.png)
+
+### Resume Analysis
+
+![Resume Anaylsis](screenshots/analysis.png)
+
+### AI Suggestions
+
+![AI Suggestions](screenshots/ai-suggestions.png)
+
+### Generated PDF
+
+![PDF Report](screenshots/pdf-1.png)
+![PDF Report](screenshots/pdf-2.png)
+
+---
+
+## Project Overview
+
+This project is a full-stack application built with a React frontend and a FastAPI backend. The goal is to allow users to upload a resume PDF, extract and analyze its contents, compare it against a job description, generate AI-powered suggestions to improve the resume and download a professional PDF improvement report exported by the application.
+
+---
+
+## Features
+
+- Resume PDF Upload
+- Resume Analysis
+- Job Description Matching
+- AI-powered resume feedback
+- PDF report generation
+- Responsive React UI
+- FastAPI backend
 
 ---
 
@@ -29,18 +57,20 @@ This project is a full-stack application built with a React frontend and a FastA
 - React
 - TypeScript
 - Vite
-- ESLint
+- Axios
+- CSS Modules
 
 ### Backend
 - Python
 - FastAPI
 - Uvicorn
 
-### AI / Parsing / Utilities
+### AI 
 - OpenAI API
+
+### Libraries
 - PyMuPDF
-- python-dotenv
-- python-multipart
+- ReportLab
 
 ---
 
@@ -57,3 +87,5 @@ AI-Resume-Builder/
 ├── README.md
 ├── .gitignore
 └── LICENSE
+
+---

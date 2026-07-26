@@ -19,7 +19,7 @@ function MatchResultsCard({
     if (!matchResults) return null;
 
     return (
-        <Card title="Jobe Match Results">
+        <Card title="Job Match Results">
           <h2>Job Match Results</h2>
           <p><strong>Match Score:</strong> {matchResults.match_score}%</p>
           <p>
