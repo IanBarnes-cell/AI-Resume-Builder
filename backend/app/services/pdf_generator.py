@@ -6,8 +6,9 @@ import textwrap  # so text wont run off page
 def generate_pdf(ai_suggestions: dict, output_path: str):
 
     TOP_MARGIN = 750
-    BOTTOM_MARGIN = 80
+    BOTTOM_MARGIN = 40
     LINE_HEIGHT = 18
+    SECTION_HEIGHT = 60
 
     y = TOP_MARGIN
 
@@ -22,6 +23,11 @@ def generate_pdf(ai_suggestions: dict, output_path: str):
 
 
     # OVERALL FEEDBACK SECTION
+
+    if y - SECTION_HEIGHT < BOTTOM_MARGIN:
+        pdf.showPage()
+        pdf.setFont("Helvetica-Bold", 14)
+        y = TOP_MARGIN
 
     pdf.setFont("Helvetica-Bold", 14)
     pdf.drawString(50, y, "Overall Feedback")
@@ -56,6 +62,11 @@ def generate_pdf(ai_suggestions: dict, output_path: str):
 
     # IMPROVEMENT SUGGESTIONS SECTION
 
+    if y - SECTION_HEIGHT < BOTTOM_MARGIN:
+        pdf.showPage()
+        pdf.setFont("Helvetica-Bold", 14)
+        y = TOP_MARGIN
+
     pdf.setFont("Helvetica-Bold", 14)
     pdf.drawString(50, y, "Improvement Suggestions")
     y -= 20
@@ -69,19 +80,21 @@ def generate_pdf(ai_suggestions: dict, output_path: str):
 
     for suggestion in ai_suggestions["improvement_suggestions"]:
 
-        wrapped = textwrap.wrap(suggestion, width=80)
+        wrapped_suggestion = textwrap.wrap(suggestion, width=80)
+
+        required_height = len(wrapped_suggestion) * LINE_HEIGHT + 8
+
+        if y - required_height < BOTTOM_MARGIN:
+            pdf.showPage()
+            pdf.setFont("Helvetica", 11)
+            y = TOP_MARGIN
 
         # Print the first wrapped line with a bullet
-        pdf.drawString(60, y, f"• {wrapped[0]}")
+        pdf.drawString(60, y, f"• {wrapped_suggestion[0]}")
         y -= 18
 
         # Print remaining wrapped lines without another bullet
-        for line in wrapped[1:]:
-
-            if y < BOTTOM_MARGIN:
-                pdf.showPage()
-                pdf.setFont("Helvetica",11)
-                y = TOP_MARGIN
+        for line in wrapped_suggestion[1:]:
             pdf.drawString(75, y, line)
             y -= LINE_HEIGHT
 
@@ -89,6 +102,11 @@ def generate_pdf(ai_suggestions: dict, output_path: str):
 
 
     # MISSING SKILLS SECTION
+
+    if y - SECTION_HEIGHT < BOTTOM_MARGIN:
+        pdf.showPage()
+        pdf.setFont("Helvetica-Bold", 14)
+        y = TOP_MARGIN
 
     pdf.setFont("Helvetica-Bold", 14)
     pdf.drawString(50, y, "Missing Skills")
@@ -103,13 +121,34 @@ def generate_pdf(ai_suggestions: dict, output_path: str):
     pdf.setFont("Helvetica", 11)
 
     for skill in ai_suggestions["missing_skills"]:
-        pdf.drawString(60, y, f"• {skill}")
-        y -= 18
+        wrapped_skills = textwrap.wrap(skill, width=80)
 
+        required_height = len(wrapped_skills) * LINE_HEIGHT + 8
+
+        if y - required_height < BOTTOM_MARGIN:
+            pdf.showPage()
+            pdf.setFont("Helvetica", 11)
+            y = TOP_MARGIN
+
+        # First line gets the bullet
+        pdf.drawString(60, y, f"• {wrapped_skills[0]}")
+        y -= LINE_HEIGHT
+
+        # Remaining lines are indented
+        for line in wrapped_skills[1:]:
+            pdf.drawString(75, y, line)
+            y -= LINE_HEIGHT
+
+        y -= 8
     y -= 20
 
 
     # BULLET REWRITES SECTION
+
+    if y - SECTION_HEIGHT < BOTTOM_MARGIN:
+        pdf.showPage()
+        pdf.setFont("Helvetica-Bold", 14)
+        y = TOP_MARGIN
 
     pdf.setFont("Helvetica-Bold", 14)
     pdf.drawString(50, y, "Bullet Rewrites")
@@ -125,18 +164,21 @@ def generate_pdf(ai_suggestions: dict, output_path: str):
 
     for bullet in ai_suggestions["bullet_rewrites"]:
 
-        wrapped = textwrap.wrap(bullet, width=80)
+        wrapped_bullets = textwrap.wrap(bullet, width=80)
+
+        required_height = len(wrapped_bullets) * LINE_HEIGHT + 8
+
+        if y - required_height < BOTTOM_MARGIN:
+            pdf.showPage()
+            pdf.setFont("Helvetica", 11)
+            y = TOP_MARGIN
 
         # First line gets the bullet
-        pdf.drawString(60, y, f"• {wrapped[0]}")
+        pdf.drawString(60, y, f"• {wrapped_bullets[0]}")
         y -= 18
 
         # Remaining lines are indented
-        for line in wrapped[1:]:
-            if y < BOTTOM_MARGIN:
-                pdf.showPage()
-                pdf.setFont("Helvetica",11)
-                y = TOP_MARGIN
+        for line in wrapped_bullets[1:]:
             pdf.drawString(75, y, line)
             y -= LINE_HEIGHT
 
@@ -145,6 +187,11 @@ def generate_pdf(ai_suggestions: dict, output_path: str):
 
 
     # TAILORED SUMMARY SECTION
+
+    if y - SECTION_HEIGHT < BOTTOM_MARGIN:
+        pdf.showPage()
+        pdf.setFont("Helvetica-Bold", 14)
+        y = TOP_MARGIN
 
     pdf.setFont("Helvetica-Bold", 14)
     pdf.drawString(50, y, "Tailored Summary")
