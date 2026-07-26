@@ -4,9 +4,14 @@ An AI-powered resume builder and job-tailoring web application that helps users 
 
 ---
 
-## Live Demo
+## 🚀 Live Demo
 
-**Frontend:** https://ai-resume-builder-1te8a3ktl-ian-barnes.vercel.app
+Try the application here:
+
+https://ai-resume-builder-delta-gold.vercel.app
+
+
+**Frontend:** https://ai-resume-builder-delta-gold.vercel.app
 
 **Backend API:** https://ai-resume-builder-pogp.onrender.com
 
